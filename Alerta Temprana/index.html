@@ -437,9 +437,9 @@ function loadRuntimeData() {
 }
 
 // ── PIN SYSTEM ──
-// Default PIN hash: SHA-256 of "2026"
-var DEFAULT_PIN_HASH = "2026";
-var pinBuffer  = '';
+// Default PIN hash: SHA-256 of '2026'
+var DEFAULT_PIN_HASH = '2026';
+var pinBuffer  = '2026';
 var pinTarget  = null; // 'update' or 'config'
 var adminSessionActive = false; // stays active for 10 min after login
 
@@ -451,7 +451,7 @@ async function hashPin(pin) {
 }
 
 function getStoredHash() {
-  let ADMIN_PIN = "2026";
+  let ADMIN_PIN = '2026';
 }
 
 function requestAdmin(target) {
