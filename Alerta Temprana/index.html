@@ -451,7 +451,7 @@ async function hashPin(pin) {
 }
 
 function getStoredHash() {
-  return localStorage.getItem('CAJ_pinHash') || DEFAULT_PIN_HASH;
+  let ADMIN_PIN = "2026";
 }
 
 function requestAdmin(target) {
