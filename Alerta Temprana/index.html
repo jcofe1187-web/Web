@@ -467,31 +467,42 @@ function requestAdmin(target) {
   document.getElementById('pinOverlay').classList.add('active');
 }
 
-function pinKey(val) {
-  if (val === 'del') {
-    pinBuffer = pinBuffer.slice(0, -1);
-    updatePinDots();
-    return;
-  }
-  if (pinBuffer.length >= 4) return;
-  pinBuffer += val;
-  updatePinDots();
-  if (pinBuffer.length === 4) {
-    setTimeout(checkPin, 150);
-  }
-}
+function pinKey(num) {
+  const dots = document.getElementById('pinDots');
+  const errorMsg = document.getElementById('pinError');
+  
+  // Limpiar mensaje de error si el usuario empieza a escribir de nuevo
+  errorMsg.innerText = "";
+  dots.classList.remove('error');
 
-function pinClear() {
-  pinBuffer = '';
+  if (num === 'del') {
+    currentPin = currentPin.slice(0, -1);
+  } else {
+    if (currentPin.length < 4) currentPin += num;
+  }
+  
   updatePinDots();
-  closeModal('pinOverlay');
-}
 
-function updatePinDots() {
-  for (var i = 0; i < 4; i++) {
-    var dot = document.getElementById('dot' + i);
-    dot.classList.remove('filled', 'error');
-    if (i < pinBuffer.length) dot.classList.add('filled');
+  if (currentPin.length === 4) {
+    // Usamos == para que no importe si es "2026" o 2026
+    if (currentPin == ADMIN_PIN) {
+      document.getElementById('pinOverlay').classList.remove('active');
+      if (adminAction === 'config') openConfig();
+      if (adminAction === 'update') openUpdate();
+      currentPin = ""; // Limpiar para la próxima vez
+      updatePinDots();
+    } else {
+      // SI FALLA: Agitar y limpiar automáticamente
+      dots.classList.add('error');
+      errorMsg.innerText = "PIN Incorrecto";
+      
+      // IMPORTANTE: Limpiamos el PIN después de medio segundo para que pueda reintentar
+      setTimeout(() => {
+        currentPin = "";
+        updatePinDots();
+        dots.classList.remove('error');
+      }, 500);
+    }
   }
 }
 
